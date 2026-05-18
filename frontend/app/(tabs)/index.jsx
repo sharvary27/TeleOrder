@@ -83,11 +83,11 @@ export default function MenuScreen() {
                 <Text className="text-base font-semibold text-orange-500 mt-0.5">
                   ${item.price.toFixed(2)}
                 </Text>
-                <Text className="text-xs text-gray-400 mt-1">
-                  {item.variants
-                    ? item.variants.join(" · ")
-                    : item.sizes.join(" · ")}
-                </Text>
+                {item.allergens && item.allergens.length > 0 && (
+                    <Text className="text-xs text-red-400 mt-1">
+                        {item.allergens.join(", ")}
+                    </Text>
+                )}
               </View>
 
               {cartItem ? (

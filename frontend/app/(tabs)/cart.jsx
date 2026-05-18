@@ -8,9 +8,6 @@ export default function CartScreen() {
   if (cart.length === 0) {
     return (
       <View className="flex-1 bg-gray-50">
-        <View className="bg-orange-500 pt-14 pb-4 px-5">
-          <Text className="text-white text-2xl font-bold">Your Cart</Text>
-        </View>
         <View className="flex-1 justify-center items-center">
           <Text className="text-6xl mb-4">🛒</Text>
           <Text className="text-gray-400 text-lg">Your cart is empty</Text>
@@ -24,9 +21,8 @@ export default function CartScreen() {
 
   return (
     <View className="flex-1 bg-gray-50">
-      {/* Header */}
+    
       <View className="bg-orange-500 pt-14 pb-4 px-5 flex-row justify-between items-end">
-        <Text className="text-white text-2xl font-bold">Your Cart</Text>
         <TouchableOpacity onPress={clearCart}>
           <Text className="text-orange-100 text-sm">Clear All</Text>
         </TouchableOpacity>

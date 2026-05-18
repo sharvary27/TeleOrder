@@ -38,9 +38,11 @@ export default function ItemModal({ item, visible, onClose, onAdd }) {
                 <Text className="text-xl font-bold text-gray-800">
                   {item.name}
                 </Text>
-                <Text className="text-orange-500 font-semibold text-lg">
-                  ${item.price.toFixed(2)}
-                </Text>
+                    {item.allergens && item.allergens.length > 0 && (
+                        <Text className="text-red-400 text-sm mt-1">
+                            Contains: {item.allergens.join(", ")}
+                        </Text>
+                    )}
               </View>
             </View>
             <TouchableOpacity onPress={onClose}>

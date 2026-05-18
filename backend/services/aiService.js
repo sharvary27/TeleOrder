@@ -19,11 +19,11 @@ const llm = new ChatGroq({
 
 const actionSchema = z.object({
   type: z.enum(["add", "remove", "update", "clear"]),
-  item: z.string().describe("The menu item name"),
+  item: z.string().nullable().optional().describe("The menu item name"),
   variant: z.string().nullable().optional().describe("Flavor variant like Classic, Spicy"),
   size: z.string().nullable().optional().describe("Size like Small, Regular, Large"),
-  quantity: z.number().describe("How many"),
-  price: z.number().describe("Per-item price from the menu"),
+  quantity: z.number().nullable().optional().describe("How many"),
+  price: z.number().nullable().optional().describe("Per-item price from the menu"),
 });
 
 const responseSchema = z.object({
@@ -35,11 +35,11 @@ const structuredLLM = llm.withStructuredOutput(responseSchema);
 
 export async function processOrder(message, cart, history = []) {
   const menuString = menu
-    .map(
-      (item) =>
-        `${item.name}: $${item.price} ${item.variants ? `(Variants: ${item.variants.join(", ")})` : ""} ${item.sizes ? `(Sizes: ${item.sizes.join(", ")})` : ""}`
-    )
-    .join("\n");
+  .map(
+    (item) =>
+      `${item.name}: $${item.price} ${item.variants ? `(Variants: ${item.variants.join(", ")})` : ""} ${item.sizes ? `(Sizes: ${item.sizes.join(", ")})` : ""} ${item.allergens && item.allergens.length > 0 ? `[Allergens: ${item.allergens.join(", ")}]` : "[No allergens]"}`
+  )
+  .join("\n");
 
   const chatHistory = history.map((msg) => [
     msg.role === "assistant" ? "ai" : "human",
@@ -66,7 +66,10 @@ RULES:
 - Your "reply" must be short, friendly, and human-like. NEVER include JSON, cart arrays, or raw data in the reply.
 - If the user asks for something not on the menu, suggest a similar item from the menu.
 - If the user says "yes", "sure", "ok", or confirms, add the last suggested item to the cart.
-- If the user asks something unrelated to ordering, politely steer them back.`,
+- If the user asks something unrelated to ordering, politely steer them back.
+- If the user is just chatting (greetings, questions, etc.) and not ordering, return an empty actions array [].
+- When adding items to the cart, mention any allergens in the item. For example: "Added a Classic Burger! ⚠️ Heads up: contains Gluten, Dairy, and Sesame."
+- If the user mentions an allergy, warn them about items that contain that allergen and suggest safe alternatives.`,
     ],
     ...chatHistory,
     ["human", "{message}"],

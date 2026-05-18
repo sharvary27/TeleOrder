@@ -20,7 +20,7 @@ export default function ChatScreen() {
     {
       id: "1",
       role: "assistant",
-      text: "Hey there! 👋 I'm TeleOrder. Tell me what you'd like to eat and I'll add it to your cart!",
+      text: "Hey there! I'm TeleOrder. Tell me what you'd like to eat and I'll add it to your cart!",
     },
   ]);
   const flatListRef = useRef(null);
@@ -39,7 +39,7 @@ export default function ChatScreen() {
       const botMessage = {
         id: Date.now().toString(),
         role: "assistant",
-        text: "Cart cleared! 🗑️ What would you like to order?",
+        text: "Cart cleared! What would you like to order?",
       };
       setMessages((prev) => [...prev, botMessage]);
       return;
@@ -50,7 +50,7 @@ export default function ChatScreen() {
         const botMessage = {
           id: Date.now().toString(),
           role: "assistant",
-          text: "Your cart is empty! Try adding something 😊",
+          text: "Your cart is empty! Try adding something",
         };
         setMessages((prev) => [...prev, botMessage]);
       } else {
@@ -84,7 +84,7 @@ export default function ChatScreen() {
         const botMessage = {
           id: Date.now().toString(),
           role: "assistant",
-          text: `Order placed! 🎉 Your total is $${total.toFixed(2)}. Thanks for ordering with TeleOrder!`,
+          text: `Order placed! Your total is $${total.toFixed(2)}. Thanks for ordering with TeleOrder!`,
         };
         setMessages((prev) => [...prev, botMessage]);
         clearCart();
@@ -231,16 +231,15 @@ export default function ChatScreen() {
 
   return (
     <KeyboardAvoidingView
-      className="flex-1 bg-gray-50"
+      className="flex-1 bg-gray-100"
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       {/* Header */}
-      <View className="bg-orange-500 pt-14 pb-4 px-5">
-        <Text className="text-white text-2xl font-bold">TeleOrder</Text>
+      {/* <View className="bg-gray-900 pt-14 pb-4 px-5">
         <Text className="text-orange-100 text-sm mt-1">
           Tell me what you'd like to eat!
         </Text>
-      </View>
+      </View> */}
 
       {/* Messages */}
       <FlatList

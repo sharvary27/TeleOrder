@@ -5,7 +5,8 @@ const menu = [
     price: 8.99,
     variants: ["Classic", "Cheese", "Spicy"],
     category: "Mains",
-    emoji: "🍔"
+    emoji: "🍔",
+    allergens: ["Gluten", "Dairy", "Sesame"]
   },
   {
     id: 2,
@@ -13,7 +14,8 @@ const menu = [
     price: 9.49,
     variants: ["Grilled", "Crispy", "Spicy"],
     category: "Mains",
-    emoji: "🍗"
+    emoji: "🍗",
+    allergens: ["Gluten", "Eggs"]
   },
   {
     id: 3,
@@ -21,7 +23,8 @@ const menu = [
     price: 3.99,
     sizes: ["Small", "Regular", "Large"],
     category: "Sides",
-    emoji: "🍟"
+    emoji: "🍟",
+    allergens: ["Gluten"]
   },
   {
     id: 4,
@@ -29,7 +32,8 @@ const menu = [
     price: 4.99,
     sizes: ["Small", "Regular", "Large"],
     category: "Sides",
-    emoji: "🧅"
+    emoji: "🧅",
+    allergens: ["Gluten", "Eggs"]
   },
   {
     id: 5,
@@ -37,7 +41,8 @@ const menu = [
     price: 2.49,
     sizes: ["Small", "Regular", "Large"],
     category: "Drinks",
-    emoji: "🥤"
+    emoji: "🥤",
+    allergens: []
   },
   {
     id: 6,
@@ -45,7 +50,8 @@ const menu = [
     price: 1.49,
     sizes: ["Small", "Regular", "Large"],
     category: "Drinks",
-    emoji: "💧"
+    emoji: "💧",
+    allergens: []
   },
   {
     id: 7,
@@ -53,7 +59,8 @@ const menu = [
     price: 5.99,
     variants: ["Vanilla", "Chocolate", "Strawberry"],
     category: "Drinks",
-    emoji: "🥛"
+    emoji: "🥛",
+    allergens: ["Dairy", "Eggs"]
   }
 ];
 
