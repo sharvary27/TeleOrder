@@ -5,27 +5,56 @@ const CartContext = createContext();
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
 
-  const addToCart = (item) => {
-    setCart((prev) => {
-      const existing = prev.find(
-        (i) => i.item === item.item && i.variant === item.variant && i.size === item.size
+  const addToCart = (newItem) => {
+  setCart((prev) => {
+    const existingIndex = prev.findIndex(
+      (i) =>
+        i.item.toLowerCase() === newItem.item.toLowerCase() &&
+        (i.variant || "").toLowerCase() === (newItem.variant || "").toLowerCase() &&
+        (i.size || "").toLowerCase() === (newItem.size || "").toLowerCase()
+    );
+
+    if (existingIndex !== -1) {
+      return prev.map((i, index) =>
+        index === existingIndex
+          ? {
+              ...i,
+              quantity: i.quantity + newItem.quantity,
+              totalPrice: (i.quantity + newItem.quantity) * i.price,
+            }
+          : i
       );
+    }
 
-      if (existing) {
-        return prev.map((i) =>
-          i === existing
-            ? { ...i, quantity: i.quantity + item.quantity, totalPrice: (i.quantity + item.quantity) * i.price }
-            : i
-        );
-      }
-
-      return [...prev, item];
-    });
-  };
+    return [...prev, newItem];
+  });
+};
 
   const removeFromCart = (index) => {
     setCart((prev) => prev.filter((_, i) => i !== index));
   };
+
+  const removeByName = (name) => {
+    setCart((prev) =>
+      prev.filter((i) => i.item.toLowerCase() !== name.toLowerCase())
+    );
+  };
+
+  const updateByName = (name, updates) => {
+  setCart((prev) =>
+    prev.map((i) =>
+      i.item.toLowerCase() === name.toLowerCase()
+        ? {
+            ...i,
+            variant: updates.variant || i.variant,
+            size: updates.size || i.size,
+            quantity: updates.quantity || i.quantity,
+            totalPrice: (updates.quantity || i.quantity) * i.price,
+          }
+        : i
+    )
+  );
+};
 
   const updateQuantity = (index, newQuantity) => {
     if (newQuantity <= 0) {
@@ -36,7 +65,11 @@ export function CartProvider({ children }) {
     setCart((prev) =>
       prev.map((item, i) =>
         i === index
-          ? { ...item, quantity: newQuantity, totalPrice: newQuantity * item.price }
+          ? {
+              ...item,
+              quantity: newQuantity,
+              totalPrice: newQuantity * item.price,
+            }
           : item
       )
     );
@@ -48,7 +81,16 @@ export function CartProvider({ children }) {
 
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, cartTotal }}
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        removeByName,
+        updateQuantity,
+        clearCart,
+        updateByName,
+        cartTotal,
+      }}
     >
       {children}
     </CartContext.Provider>

@@ -1,15 +1,13 @@
 import { View, Text, TouchableOpacity, Modal } from "react-native";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "../context/ThemeContext";
 
 export default function ItemModal({ item, visible, onClose, onAdd }) {
-  const [selectedVariant, setSelectedVariant] = useState(
-    item?.variants ? item.variants[0] : null
-  );
-  const [selectedSize, setSelectedSize] = useState(
-    item?.sizes ? "Regular" : null
-  );
+  const [selectedVariant, setSelectedVariant] = useState(item?.variants ? item.variants[0] : null);
+  const [selectedSize, setSelectedSize] = useState(item?.sizes ? "Regular" : null);
   const [quantity, setQuantity] = useState(1);
+  const { isDark } = useTheme();
 
   if (!item) return null;
 
@@ -18,7 +16,7 @@ export default function ItemModal({ item, visible, onClose, onAdd }) {
       item: item.name,
       variant: selectedVariant,
       size: selectedSize,
-      quantity: quantity,
+      quantity,
       price: item.price,
       totalPrice: item.price * quantity,
     });
@@ -29,45 +27,41 @@ export default function ItemModal({ item, visible, onClose, onAdd }) {
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View className="flex-1 justify-end bg-black/40">
-        <View className="bg-white rounded-t-3xl px-5 pt-6 pb-10">
+        <View
+          style={{ backgroundColor: isDark ? "#1f2937" : "#fff" }}
+          className="rounded-t-3xl px-5 pt-6 pb-10"
+        >
           {/* Header */}
           <View className="flex-row justify-between items-center mb-4">
             <View className="flex-row items-center">
               <Text className="text-4xl mr-3">{item.emoji}</Text>
               <View>
-                <Text className="text-xl font-bold text-gray-800">
+                <Text style={{ color: isDark ? "#f3f4f6" : "#1f2937" }} className="text-xl font-bold">
                   {item.name}
                 </Text>
-                    {item.allergens && item.allergens.length > 0 && (
-                        <Text className="text-red-400 text-sm mt-1">
-                            Contains: {item.allergens.join(", ")}
-                        </Text>
-                    )}
+                {item.allergens && item.allergens.length > 0 && (
+                  <Text className="text-red-400 text-sm mt-1">Contains: {item.allergens.join(", ")}</Text>
+                )}
               </View>
             </View>
             <TouchableOpacity onPress={onClose}>
-              <Ionicons name="close-circle" size={32} color="#ccc" />
+              <Ionicons name="close-circle" size={32} color={isDark ? "#6b7280" : "#ccc"} />
             </TouchableOpacity>
           </View>
 
           {/* Variants */}
           {item.variants && (
             <View className="mb-4">
-              <Text className="text-gray-500 font-semibold mb-2">Variant</Text>
+              <Text style={{ color: isDark ? "#9ca3af" : "#6b7280" }} className="font-semibold mb-2">Variant</Text>
               <View className="flex-row gap-2">
                 {item.variants.map((v) => (
                   <TouchableOpacity
                     key={v}
-                    className={`px-4 py-2 rounded-full ${
-                      selectedVariant === v ? "bg-orange-500" : "bg-gray-100"
-                    }`}
+                    style={{ backgroundColor: selectedVariant === v ? "#FF6B35" : isDark ? "#374151" : "#f3f4f6" }}
+                    className="px-4 py-2 rounded-full"
                     onPress={() => setSelectedVariant(v)}
                   >
-                    <Text
-                      className={`font-semibold ${
-                        selectedVariant === v ? "text-white" : "text-gray-600"
-                      }`}
-                    >
+                    <Text style={{ color: selectedVariant === v ? "#fff" : isDark ? "#d1d5db" : "#4b5563" }} className="font-semibold">
                       {v}
                     </Text>
                   </TouchableOpacity>
@@ -79,21 +73,16 @@ export default function ItemModal({ item, visible, onClose, onAdd }) {
           {/* Sizes */}
           {item.sizes && (
             <View className="mb-4">
-              <Text className="text-gray-500 font-semibold mb-2">Size</Text>
+              <Text style={{ color: isDark ? "#9ca3af" : "#6b7280" }} className="font-semibold mb-2">Size</Text>
               <View className="flex-row gap-2">
                 {item.sizes.map((s) => (
                   <TouchableOpacity
                     key={s}
-                    className={`px-4 py-2 rounded-full ${
-                      selectedSize === s ? "bg-orange-500" : "bg-gray-100"
-                    }`}
+                    style={{ backgroundColor: selectedSize === s ? "#FF6B35" : isDark ? "#374151" : "#f3f4f6" }}
+                    className="px-4 py-2 rounded-full"
                     onPress={() => setSelectedSize(s)}
                   >
-                    <Text
-                      className={`font-semibold ${
-                        selectedSize === s ? "text-white" : "text-gray-600"
-                      }`}
-                    >
+                    <Text style={{ color: selectedSize === s ? "#fff" : isDark ? "#d1d5db" : "#4b5563" }} className="font-semibold">
                       {s}
                     </Text>
                   </TouchableOpacity>
@@ -104,15 +93,16 @@ export default function ItemModal({ item, visible, onClose, onAdd }) {
 
           {/* Quantity */}
           <View className="mb-6">
-            <Text className="text-gray-500 font-semibold mb-2">Quantity</Text>
+            <Text style={{ color: isDark ? "#9ca3af" : "#6b7280" }} className="font-semibold mb-2">Quantity</Text>
             <View className="flex-row items-center gap-4">
               <TouchableOpacity
-                className="w-10 h-10 rounded-full bg-gray-100 justify-center items-center"
+                style={{ backgroundColor: isDark ? "#374151" : "#f3f4f6" }}
+                className="w-10 h-10 rounded-full justify-center items-center"
                 onPress={() => setQuantity((q) => Math.max(1, q - 1))}
               >
-                <Ionicons name="remove" size={20} color="#666" />
+                <Ionicons name="remove" size={20} color={isDark ? "#d1d5db" : "#666"} />
               </TouchableOpacity>
-              <Text className="text-2xl font-bold text-gray-800">{quantity}</Text>
+              <Text style={{ color: isDark ? "#f3f4f6" : "#1f2937" }} className="text-2xl font-bold">{quantity}</Text>
               <TouchableOpacity
                 className="w-10 h-10 rounded-full bg-orange-500 justify-center items-center"
                 onPress={() => setQuantity((q) => q + 1)}
@@ -123,10 +113,7 @@ export default function ItemModal({ item, visible, onClose, onAdd }) {
           </View>
 
           {/* Add Button */}
-          <TouchableOpacity
-            className="bg-orange-500 rounded-full py-4 items-center"
-            onPress={handleAdd}
-          >
+          <TouchableOpacity className="bg-orange-500 rounded-full py-4 items-center" onPress={handleAdd}>
             <Text className="text-white text-lg font-bold">
               Add to Cart — ${(item.price * quantity).toFixed(2)}
             </Text>

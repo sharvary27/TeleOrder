@@ -1,21 +1,23 @@
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { useCart } from "../../context/CartContext";
+import { useTheme } from "../../context/ThemeContext";
 
 export default function TabLayout() {
   const { cart } = useCart();
   const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const { isDark, toggleTheme } = useTheme();
 
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: "#FF6B35",
-        tabBarInactiveTintColor: "#999",
+        tabBarInactiveTintColor: isDark ? "#6b7280" : "#999",
         tabBarStyle: {
-          backgroundColor: "#fff",
+          backgroundColor: isDark ? "#1f2937" : "#fff",
           borderTopWidth: 1,
-          borderTopColor: "#eee",
+          borderTopColor: isDark ? "#374151" : "#eee",
           height: 85,
           paddingBottom: 25,
           paddingTop: 10,
@@ -27,6 +29,11 @@ export default function TabLayout() {
         headerTitleStyle: {
           fontWeight: "bold",
         },
+        headerRight: () => (
+          <TouchableOpacity onPress={toggleTheme} style={{ marginRight: 16 }}>
+            <Ionicons name={isDark ? "sunny" : "moon"} size={22} color="#fff" />
+          </TouchableOpacity>
+        ),
       }}
     >
       <Tabs.Screen
