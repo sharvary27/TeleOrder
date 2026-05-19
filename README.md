@@ -23,6 +23,7 @@ The AI understands your intent and updates the cart automatically.
 - **Expo Router** — File-based navigation
 - **NativeWind (Tailwind CSS)** — Utility-first styling
 - **React Context API** — Global cart state management
+- **Dark Mode**
 
 ## Key Features
 
